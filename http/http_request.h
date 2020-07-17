@@ -30,6 +30,7 @@ namespace http {
         std::string http_version;
         int http_version_major;
         int http_version_minor;
+        std::string body;
 
         http_request_header headers;
     };

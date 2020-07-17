@@ -11,7 +11,7 @@ http::http_request::http_request(const std::string &request) {
     auto req_head_split = request.find("\r\n\r\n");
     auto line = request.substr(0, req_line_split);
     auto head = request.substr(req_line_split + 2, req_head_split - req_line_split - 2);
-    auto body = request.substr(req_head_split + 4);
+    body = request.substr(req_head_split + 4);
 
     auto line_split = line.find(' ');
     method = line.substr(0, line_split);
