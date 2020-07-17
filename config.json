@@ -1,0 +1,15 @@
+{
+  "port": "8000",
+  "server": "192.168.0.104",
+  "router": {
+    "/": "/home/shizuku/workspace/Webstorm/untitled/build"
+  },
+  "expires": {
+    "htm|html|gif|jpg|jpeg|png|bmp|swf|ioc|rar|zip|txt|flv|mid|doc|ppt|pdf|xls|mp3|wma": "15d",
+    "js|css": "1h",
+    "gif|jpg|jpeg|png|bmp|swf": "10d"
+  },
+  "error_page": {
+    "404": "404.html"
+  }
+}
