@@ -21,6 +21,7 @@ public:
 
     int port;
     std::map<std::string, std::string> router;
+    std::map<std::string, std::string> expires;
 };
 
 std::ostream &operator<<(std::ostream &o, const server_config &sc);

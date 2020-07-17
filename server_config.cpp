@@ -10,10 +10,15 @@ server_config::server_config(const std::string &filename) {
     boost::property_tree::read_json(filename, root);
 
     port = root.get<int>("port");
-    auto r = root.get_child("router");
 
+    auto r = root.get_child("router");
     for (auto &i : r) {
         router.insert_or_assign(i.first, i.second.get<std::string>(""));
+    }
+
+    auto e = root.get_child("expires");
+    for (auto &i : e) {
+        expires.insert_or_assign(i.first, i.second.get<std::string>(""));
     }
 }
 
