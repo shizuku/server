@@ -9,20 +9,20 @@
 http::http_request::http_request(const std::string &request) {
     auto req_line_split = request.find("\r\n");
     auto req_head_split = request.find("\r\n\r\n");
-    auto line = request.substr(0, req_line_split);
+    auto status = request.substr(0, req_line_split);
     auto head = request.substr(req_line_split + 2, req_head_split - req_line_split - 2);
     body = request.substr(req_head_split + 4);
 
-    auto line_split = line.find(' ');
-    method = line.substr(0, line_split);
-    line = line.substr(line_split + 1);
+    auto line_split = status.find(' ');
+    method = status.substr(0, line_split);
+    status = status.substr(line_split + 1);
 
-    line_split = line.find(' ');
-    url = line.substr(0, line_split);
-    line = line.substr(line_split + 1);
+    line_split = status.find(' ');
+    url = status.substr(0, line_split);
+    status = status.substr(line_split + 1);
 
-    line_split = line.find("HTTP/");
-    http_version = line.substr(line_split + 5);
+    line_split = status.find("HTTP/");
+    http_version = status.substr(line_split + 5);
 
     auto version_split = http_version.find('.');
     auto major_str = http_version.substr(0, version_split);

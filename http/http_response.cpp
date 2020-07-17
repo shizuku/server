@@ -6,19 +6,31 @@
 
 #include "http_response.h"
 
-http::http_response::http_response(int client_socket) : client_socket(client_socket), head{}, body{} {
+#include <utility>
 
+http::http_response::http_response(int client_socket) : client_socket(client_socket) {}
+
+void http::http_response::write_head(int status_code, const std::string &reason_phrase,
+                                     const http::http_response_headers &headers) const {
+    std::stringstream head;
+    head << "HTTP/1.1 " << status_code << " " << reason_phrase << "\r\n";
+    for (auto &i:headers.map) {
+        head << i.first << ": " << i.second << "\r\n";
+    }
+    head << "\r\n";
+    auto s = head.str();
+    ::send(client_socket, s.c_str(), s.length(), 0);
 }
 
-void http::http_response::end() {
-    head << "HTTP/1.0 200 OK \r\n"
-            "Content-Type: text/plain\r\n"
-            "Content-Length: 137582\r\n"
-            "Expires: Thu, 05 Dec 1997 16:00:00 GMT\r\n"
-            "Last-Modified: Wed, 5 August 1996 15:55:28 GMT\r\n"
-            "Server: Apache 0.84\r\n";
+void http::http_response::write(const std::string &trunk) const {
+    ::send(client_socket, trunk.c_str(), trunk.length(), 0);
+}
 
-    auto str = head.str() + "\r\n" + body.str();
-    ::send(client_socket, str.c_str(), str.length(), 0);
+void http::http_response::end() const {
     ::close(client_socket);
+}
+
+
+http::http_response_headers::http_response_headers(std::map<std::string, std::string> m) : map(std::move(m)) {
+
 }

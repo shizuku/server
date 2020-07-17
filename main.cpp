@@ -9,15 +9,22 @@
 #include "http/http_server.h"
 
 void root(const http::http_request &req, http::http_response res) {
-    std::cout << "request: " << req.url << std::endl;
     std::cout << req.method << req.url << std::endl;
-    for (auto &i:req.headers.map) {
-        std::cout << i.first << " : " << i.second << std::endl;
-    }
-    std::cout << std::endl << std::endl;
-    res.body << "<html>\n"
-                "  <body>Hello World</body>\n"
-                "</html>";
+
+    std::time(nullptr);
+    res.write_head(200, "OK", http::http_response_headers{std::map<std::string, std::string>{
+            {"Date",         "Sat, 31 Dec 2005 23:59:59 GMT"},
+            {"Content-Type", "text/html; charset=utf-8"},
+    }});
+
+    res.write("<html>\n"
+              "<head>\n"
+              "<title>Wrox Homepage</title>\n"
+              "</head>\n"
+              "<body>\n"
+              "hahaahahahahahaah\n"
+              "</body>\n"
+              "</html>");
     res.end();
 }
 

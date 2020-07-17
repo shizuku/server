@@ -9,20 +9,29 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <map>
 
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <libnet.h>
 
 namespace http {
+    class http_response_headers {
+    public:
+        explicit http_response_headers(std::map<std::string, std::string> m);
+
+        std::map<std::string, std::string> map;
+    };
+
     class http_response {
     public:
         explicit http_response(int client_socket);
 
-        std::stringstream head;
-        std::stringstream body;
+        void write(const std::string &trunk) const;
 
-        void end();
+        void write_head(int status_code, const std::string &reason_phrase, const http_response_headers &headers) const;
+
+        void end() const;
 
     private:
         int client_socket;
