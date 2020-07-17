@@ -20,7 +20,6 @@ public:
     explicit server_config(const std::string &filename);
 
     int port;
-    std::string server;
     std::map<std::string, std::string> router;
 };
 

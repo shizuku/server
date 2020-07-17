@@ -1,6 +1,5 @@
 {
   "port": "8000",
-  "server": "192.168.0.104",
   "router": {
     "/": "/home/shizuku/workspace/Webstorm/untitled/build"
   },

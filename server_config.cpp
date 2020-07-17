@@ -10,7 +10,6 @@ server_config::server_config(const std::string &filename) {
     boost::property_tree::read_json(filename, root);
 
     port = root.get<int>("port");
-    server = root.get<std::string>("server");
     auto r = root.get_child("router");
 
     for (auto &i : r) {
@@ -19,7 +18,6 @@ server_config::server_config(const std::string &filename) {
 }
 
 std::ostream &operator<<(std::ostream &o, const server_config &sc) {
-    o << "server: " << sc.server << "\n";
     o << "port: " << sc.port << "\n";
     o << "router:\n";
     for (auto &i:sc.router) {
