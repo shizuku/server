@@ -16,7 +16,7 @@ server_router *router;
 cache_file_pool *file_pool;
 
 void www(const http::http_request &req, http::http_response res) {
-    std::cout << req.method << req.url << std::endl;
+    std::cout << req.method << "\t" << req.url << std::endl;
 
     auto t = std::time(nullptr);
     std::stringstream tt{};
@@ -27,21 +27,24 @@ void www(const http::http_request &req, http::http_response res) {
     try {
         auto s = file_pool->get(path);
         res.write_head(200, "OK", http::http_response_headers{std::map<std::string, std::string>{
-                {"Date",         time},
-                {"Content-Type", s.mime_type + "; charset=utf-8"},
+                {"Date",           time},
+                {"Accept-Ranges",  "bytes"},
+                {"Content-Type",   s.mime_type},
+                {"Content-Length", std::to_string(s.length)},
+                {"Server",         "shizuku/0.1"},
         }});
-        res.write(s.content);
-    } catch (...) {
-        std::cout << "error" << std::endl;
+        res.write(s.content, s.length);
+    } catch (const std::exception &e) {
+        std::cout << "error: " << e.what() << std::endl;
     }
-    res.end();
+    res.shutdown();
 }
 
 int main() {
     const std::string config_filename = "config.json";
 
     sc = new server_config(config_filename);
-    router = new server_router(static_cast<std::map<std::string, std::string> &&>(sc->router));
+    router = new server_router(static_cast<std::map<std::string, std::string, cmp> &&>(sc->router));
     file_pool = new cache_file_pool{sc->expires};
 
     http::create_server(&www).listen(sc->port);

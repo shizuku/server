@@ -10,12 +10,14 @@
 #include <vector>
 #include <fstream>
 #include <map>
+#include <bitset>
+#include <sstream>
 #include <cstring>
 #include <ctime>
 
 class cache_file {
 public:
-    const size_t BUFFER_SIZE = 4096;
+    const int BUFFER_SIZE = 40960;
 
     cache_file(const std::string &full_absolute_path, time_t create_time, time_t spire_time);
 
@@ -33,6 +35,7 @@ public:
     time_t create_time;
 
     char *content;
+    size_t length;
 };
 
 class cache_file_pool {

@@ -13,6 +13,8 @@
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
 
+#include "server_router.h"
+
 class server_config {
 public:
     server_config() = delete;
@@ -20,7 +22,7 @@ public:
     explicit server_config(const std::string &filename);
 
     int port;
-    std::map<std::string, std::string> router;
+    std::map<std::string, std::string, cmp> router;
     std::map<std::string, std::string> expires;
 };
 

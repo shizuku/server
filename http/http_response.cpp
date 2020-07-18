@@ -30,6 +30,13 @@ void http::http_response::end() const {
     ::close(client_socket);
 }
 
+void http::http_response::shutdown() const {
+    ::shutdown(client_socket, SHUT_WR);
+}
+
+void http::http_response::write(const char *s, size_t len) const {
+    ::send(client_socket, s, len, 0);
+}
 
 http::http_response_headers::http_response_headers(std::map<std::string, std::string> m) : map(std::move(m)) {
 

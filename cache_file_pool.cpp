@@ -3,31 +3,27 @@
  * @author: shizuku
  * @date: 2020/7/16
  ***********************/
+
 #include "cache_file_pool.h"
 
 cache_file::cache_file(const std::string &full_absolute_path, time_t create_time, time_t spire_time)
         : absolute_path{(full_absolute_path)}, expires_time(spire_time), create_time(create_time) {
     std::ifstream fs{full_absolute_path, std::ios_base::in | std::ios_base::binary};
-    std::string str{};
-    char buffer[BUFFER_SIZE];
-    while (!fs.eof()) {
-        ::memset(buffer, 0, BUFFER_SIZE);
-        fs.read(buffer, BUFFER_SIZE);
-        str.append(buffer);
-    }
-    content = new char[str.length() + 1]{0};
-    ::strcpy(content, str.c_str());
+    fs.seekg(0, std::ifstream::end);
+    length = fs.tellg();
+    fs.seekg(0, std::ifstream::beg);
+    content = new char[length + 1]{0};
+    fs.read(content, length);
+    fs.close();
 
-    int pos = 0;
     int start = 0;
-    pos = full_absolute_path.find('/', start);
+    int pos = full_absolute_path.find('/', start);
     while (pos != std::string::npos) {
         start = pos + 1;
         pos = full_absolute_path.find('/', start);
     }
     file_name = full_absolute_path.substr(start);
 
-    pos = 0;
     start = 0;
     pos = file_name.find('.', start);
     while (pos != std::string::npos) {
@@ -45,25 +41,40 @@ cache_file::~cache_file() {
 }
 
 std::string cache_file::generate_mime_type(const std::string &extension) {
-    if (extension == "txt") {
+    if (extension == "txt") {//text
         return "text/plain";
-    }
-    if (extension == "htm") {
+    } else if (extension == "htm" || extension == "html") {
         return "text/html";
-    }
-    if (extension == "html") {
-        return "text/html";
-    }
-    if (extension == "css") {
+    } else if (extension == "css") {
         return "text/css";
-    }
-    if (extension == "jpg") {
-        return "image/jpg";
-    }
-    if (extension == "txt") {
-        return "text/plain";
+    } else if (extension == "jpg" || extension == "jpeg") {//image
+        return "image/jpeg";
+    } else if (extension == "png") {
+        return "image/png";
+    } else if (extension == "gif") {
+        return "image/gif";
+    } else if (extension == "bmp") {
+        return "image/bmp";
+    } else if (extension == "swf") {
+        return "image/swf";
+    } else if (extension == "svg") {
+        return "image/svg+xml";
+    } else if (extension == "ico") {
+        return "image/x-icon";
+    } else if (extension == "mp3") {//audio
+        return "audio/mp3";
+    } else if (extension == "wav") {
+        return "audio/wave";
+    } else if (extension == "ogg") {
+        return "audio/ogg";
+    } else if (extension == "mp4") {//video
+        return "video/mp4";
+    } else if (extension == "js") {//application
+        return "application/javascript";
+    } else if (extension == "json") {
+        return "application/json";
     } else {
-        return "";
+        return "application/octet-stream";
     }
 }
 

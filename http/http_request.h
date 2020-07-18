@@ -32,6 +32,7 @@ namespace http {
         int http_version_minor;
         std::string body;
 
+        std::string raw;
         http_request_header headers;
     };
 }

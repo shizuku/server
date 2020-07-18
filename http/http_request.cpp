@@ -6,7 +6,7 @@
 #include "http_request.h"
 
 
-http::http_request::http_request(const std::string &request) {
+http::http_request::http_request(const std::string &request) : raw{request} {
     auto req_line_split = request.find("\r\n");
     auto req_head_split = request.find("\r\n\r\n");
     auto status = request.substr(0, req_line_split);

@@ -1,12 +1,14 @@
 {
   "port": "8000",
   "router": {
-    "/": "/home/shizuku/workspace/Webstorm/untitled/build"
+    "/": "/home/shizuku/workspace/Webstorm/untitled/build",
+    "/page": "/home/shizuku/workspace/Webstorm/untitled1/build",
+    "/ha/hello": "/home/shizuku/workspace/Webstorm/untitled2/build"
   },
   "expires": {
-    "htm|html|gif|jpg|jpeg|png|bmp|swf|ioc|rar|zip|txt|flv|mid|doc|ppt|pdf|xls|mp3|wma": "15d",
-    "js|css": "1h",
-    "gif|jpg|jpeg|png|bmp|swf": "10d"
+    "htm|html|txt|rar|zip|flv|mid|doc|ppt|pdf|xls|mp3|wma": "15d",
+    "js|css|json": "1h",
+    "gif|jpg|jpeg|png|bmp|swf|ioc": "10d"
   },
   "error_page": {
     "404": "404.html"

@@ -29,9 +29,13 @@ namespace http {
 
         void write(const std::string &trunk) const;
 
+        void write(const char *s, size_t len) const;
+
         void write_head(int status_code, const std::string &reason_phrase, const http_response_headers &headers) const;
 
         void end() const;
+
+        void shutdown() const;
 
     private:
         int client_socket;
