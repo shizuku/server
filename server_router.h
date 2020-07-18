@@ -45,14 +45,13 @@ class server_router {
 public:
     explicit server_router(std::map<std::string, std::string, cmp> &&map);
 
-    std::map<std::string, std::string, cmp> map;
-
     std::string route(const std::string &request_path);
 
+private:
     std::string dir(const std::string &p);
 
     std::string root;
-
+    std::map<std::string, std::string, cmp> map;
     const std::vector<std::string> index_extensions{"html", "htm", "jsp", "php"};
 };
 

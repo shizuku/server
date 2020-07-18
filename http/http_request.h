@@ -9,6 +9,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <sstream>
 
 namespace http {
     class http_request_header {
@@ -17,6 +18,8 @@ namespace http {
 
         explicit http_request_header(const std::string &head);
 
+        void pass(const std::string &url_, const std::string &host, int port);
+
         std::vector<std::string> raw;
         std::map<std::string, std::string> map;
     };
@@ -24,6 +27,10 @@ namespace http {
     class http_request {
     public:
         explicit http_request(const std::string &raw_headers);
+
+        void pass(const std::string &url_, const std::string &host, int port);
+
+        std::string str();
 
         std::string method;
         std::string url;

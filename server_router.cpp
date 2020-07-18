@@ -6,7 +6,7 @@
 #include "server_router.h"
 
 
-server_router::server_router(std::map<std::string, std::string, cmp> &&map) : map((map)) {
+server_router::server_router(std::map<std::string, std::string, cmp> &&map) : map{map} {
     for (auto &i:this->map) {
         i.second.append("/");
     }

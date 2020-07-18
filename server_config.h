@@ -25,6 +25,7 @@ public:
     std::map<std::string, std::string, cmp> router;
     std::map<std::string, std::string> expires;
     std::map<std::string, std::string> error_pages;
+    std::map<std::string, std::map<std::string, std::string>, cmp> proxy_pass;
 };
 
 std::ostream &operator<<(std::ostream &o, const server_config &sc);

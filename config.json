@@ -13,5 +13,12 @@
   "error_pages": {
     "404": "error_pages/404.html",
     "403": "error_pages/403.html"
+  },
+  "proxy_pass": {
+    "/hello": {
+      "host": "localhost",
+      "port": "9090",
+      "url": "/hello"
+    }
   }
 }

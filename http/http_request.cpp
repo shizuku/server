@@ -6,6 +6,30 @@
 #include "http_request.h"
 
 
+http::http_request_header::http_request_header() : http_request_header{""} {}
+
+http::http_request_header::http_request_header(const std::string &head) : raw{}, map{} {
+    unsigned long start = 0;
+    auto pos = head.find("\r\n", start);
+    while (pos != std::string::npos) {
+        auto str = head.substr(start, pos - start);
+        auto split = str.find(": ");
+        auto first = str.substr(0, split);
+        auto second = str.substr(split + 2);
+        raw.push_back(str);
+        map.insert_or_assign(first, second);
+        start = pos + 2;
+        pos = head.find("\r\n", start);
+    }
+}
+
+void http::http_request_header::pass(const std::string &url_, const std::string &host, int port) {
+    auto p = host + ":" + std::to_string(port);
+    map.insert_or_assign("Host", p);
+    map.insert_or_assign("Referer", "http://" + p + "/");
+}
+
+
 http::http_request::http_request(const std::string &request) : raw{request} {
     auto req_line_split = request.find("\r\n");
     auto req_head_split = request.find("\r\n\r\n");
@@ -37,19 +61,18 @@ http::http_request::http_request(const std::string &request) : raw{request} {
     headers = http_request_header{head};
 }
 
-http::http_request_header::http_request_header(const std::string &head) : raw{}, map{} {
-    unsigned long start = 0;
-    auto pos = head.find("\r\n", start);
-    while (pos != std::string::npos) {
-        auto str = head.substr(start, pos - start);
-        auto split = str.find(": ");
-        auto first = str.substr(0, split);
-        auto second = str.substr(split + 2);
-        raw.push_back(str);
-        map.insert_or_assign(first, second);
-        start = pos + 2;
-        pos = head.find("\r\n", start);
-    }
+void http::http_request::pass(const std::string &url_, const std::string &host, int port) {
+    url = url_;
+    headers.pass(url_, host, port);
 }
 
-http::http_request_header::http_request_header() : http_request_header{""} {}
+std::string http::http_request::str() {
+    std::stringstream ss{};
+    ss << method << " " << url << " HTTP/" << http_version << "\r\n";
+    for (auto &i:headers.map) {
+        ss << i.first << ": " << i.second << "\r\n";
+    }
+    ss << "\r\n\r\n";
+    ss << body;
+    return ss.str();
+}

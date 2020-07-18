@@ -25,6 +25,15 @@ server_config::server_config(const std::string &filename) {
     for (auto &i : ep) {
         error_pages.insert_or_assign(i.first, i.second.get<std::string>(""));
     }
+
+    auto pp = root.get_child("proxy_pass");
+    for (auto &i : pp) {
+        proxy_pass.insert_or_assign(i.first, std::map<std::string, std::string>{
+                {"host", i.second.get<std::string>("host")},
+                {"port", i.second.get<std::string>("port")},
+                {"url",  i.second.get<std::string>("url")},
+        });
+    }
 }
 
 std::ostream &operator<<(std::ostream &o, const server_config &sc) {
