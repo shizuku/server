@@ -8,7 +8,7 @@
 
 #### 使用说明
 
-1.  配置文件
+1. 配置文件
 ```json
 {
   "port": "8000",
@@ -35,3 +35,18 @@
   }
 }
 ```
+2. 生成React页面测试请求和路由
+
+3. 用node测试反向代理
+```js
+const http = require('http');
+
+let server = http.createServer(function(req, res){
+    console.log(req.url);
+    res.write("hello");
+    res.end();
+});
+
+server.listen(9090);
+```
+
