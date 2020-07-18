@@ -6,22 +6,32 @@
 #### 软件架构
 软件架构说明
 
-
-#### 安装教程
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+1.  配置文件
+```json
+{
+  "port": "8000",
+  "router": {
+    "/": "/home/shizuku/workspace/Webstorm/untitled/build",
+    "/page": "/home/shizuku/workspace/Webstorm/untitled1/build",
+    "/ha/hello": "/home/shizuku/workspace/Webstorm/untitled2/build"
+  },
+  "expires": {
+    "htm|html|txt|rar|zip|flv|mid|doc|ppt|pdf|xls|mp3|wma": "15d",
+    "js|css|json": "1h",
+    "gif|jpg|jpeg|png|bmp|swf|ioc": "10d"
+  },
+  "error_pages": {
+    "404": "error_pages/404.html",
+    "403": "error_pages/403.html"
+  },
+  "proxy_pass": {
+    "/hello": {
+      "host": "127.0.0.1",
+      "port": "9090",
+      "url": "/hello"
+    }
+  }
+}
+```

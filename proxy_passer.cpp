@@ -16,7 +16,7 @@ bool proxy_passer::pass(const http::http_request &req, const http::http_response
             auto host = i.second["host"];
             auto port = atoi(i.second["port"].c_str());
             auto url = i.second["url"];
-            std::cout << "proxy to :" << host << ":" << port << url << std::endl;
+            //std::cout << "proxy to :" << host << ":" << port << url << std::endl;
             auto r = req;
             r.pass(url, host, port);
             int sock = socket(AF_INET, SOCK_STREAM, 0);

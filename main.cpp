@@ -64,6 +64,7 @@ void www(const http::http_request &req, http::http_response res) {
 }
 
 int main() {
+    signal(SIGPIPE, SIG_IGN);
     const std::string config_filename = "config.json";
 
     sc = new server_config(config_filename);
