@@ -38,7 +38,7 @@ void www(const http::http_request &req, http::http_response res) {
                     {"Server",         "shizuku/0.1"},
             }});
             res.write(s.content, s.length);
-        } catch (const file_not_found &e) {
+        } catch (const not_found &e) {
             auto s = file_pool->get(sc->error_pages["404"]);
             res.write_head(404, "Not Found", http::http_response_headers{std::map<std::string, std::string>{
                     {"Date",           time},

@@ -12,7 +12,7 @@ class http_error : public std::exception {
 
 };
 
-class file_not_found : public http_error {
+class not_found : public http_error {
 public:
     [[nodiscard]] const char *what() const noexcept override;
 
