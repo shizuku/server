@@ -8,11 +8,22 @@
 
 #include <exception>
 
-class error_file_not_found : public std::exception {
+class http_error : public std::exception {
+
+};
+
+class file_not_found : public http_error {
 public:
-    const char *what() const noexcept override;
+    [[nodiscard]] const char *what() const noexcept override;
 
     static const int code = 404;
+};
+
+class forbidden : public http_error {
+public:
+    [[nodiscard]] const char *what() const noexcept override;
+
+    static const int code = 403;
 };
 
 #endif //SERVER_ERROR_H

@@ -20,6 +20,11 @@ server_config::server_config(const std::string &filename) {
     for (auto &i : e) {
         expires.insert_or_assign(i.first, i.second.get<std::string>(""));
     }
+
+    auto ep = root.get_child("error_pages");
+    for (auto &i : ep) {
+        error_pages.insert_or_assign(i.first, i.second.get<std::string>(""));
+    }
 }
 
 std::ostream &operator<<(std::ostream &o, const server_config &sc) {

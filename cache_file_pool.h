@@ -15,6 +15,12 @@
 #include <cstring>
 #include <ctime>
 
+#include <sys/stat.h>
+#include <dirent.h>
+#include <unistd.h>
+
+#include "error.h"
+
 class cache_file {
 public:
     const int BUFFER_SIZE = 40960;

@@ -8,6 +8,11 @@
 
 cache_file::cache_file(const std::string &full_absolute_path, time_t create_time, time_t spire_time)
         : absolute_path{(full_absolute_path)}, expires_time(spire_time), create_time(create_time) {
+    if (access(absolute_path.c_str(), 00) == -1) {
+        throw file_not_found();
+    } else if (access(absolute_path.c_str(), 04) == -1) {
+        throw forbidden();
+    }
     std::ifstream fs{full_absolute_path, std::ios_base::in | std::ios_base::binary};
     fs.seekg(0, std::ifstream::end);
     length = fs.tellg();

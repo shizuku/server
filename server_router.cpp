@@ -30,7 +30,7 @@ std::string server_router::route(const std::string &request_path) {
 }
 
 std::string server_router::dir(const std::string &p) {
-    struct stat buf;
+    struct stat buf{};
     ::stat(p.c_str(), &buf);
     if (S_ISDIR(buf.st_mode)) {
         for (auto &i:index_extensions) {
@@ -39,7 +39,7 @@ std::string server_router::dir(const std::string &p) {
                 return path;
             }
         }
-        throw error_file_not_found();
+        throw forbidden();
     } else {
         return p;
     }

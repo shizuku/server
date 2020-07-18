@@ -10,7 +10,8 @@
     "js|css|json": "1h",
     "gif|jpg|jpeg|png|bmp|swf|ioc": "10d"
   },
-  "error_page": {
-    "404": "404.html"
+  "error_pages": {
+    "404": "404.html",
+    "403": "403.html"
   }
 }

@@ -23,8 +23,9 @@ void www(const http::http_request &req, http::http_response res) {
     tt << std::put_time(std::gmtime(&t), "%c %Z");
     auto time = tt.str();
 
-    auto path = router->route(req.url);
     try {
+        auto path = router->route(req.url);
+
         auto s = file_pool->get(path);
         res.write_head(200, "OK", http::http_response_headers{std::map<std::string, std::string>{
                 {"Date",           time},
@@ -34,8 +35,26 @@ void www(const http::http_request &req, http::http_response res) {
                 {"Server",         "shizuku/0.1"},
         }});
         res.write(s.content, s.length);
-    } catch (const std::exception &e) {
-        std::cout << "error: " << e.what() << std::endl;
+    } catch (const file_not_found &e) {
+        auto s = file_pool->get(sc->error_pages["404"]);
+        res.write_head(404, "Not Found", http::http_response_headers{std::map<std::string, std::string>{
+                {"Date",           time},
+                {"Accept-Ranges",  "bytes"},
+                {"Content-Type",   s.mime_type},
+                {"Content-Length", std::to_string(s.length)},
+                {"Server",         "shizuku/0.1"},
+        }});
+        res.write(s.content, s.length);
+    } catch (const forbidden &e) {
+        auto s = file_pool->get(sc->error_pages["403"]);
+        res.write_head(403, "Forbidden", http::http_response_headers{std::map<std::string, std::string>{
+                {"Date",           time},
+                {"Accept-Ranges",  "bytes"},
+                {"Content-Type",   s.mime_type},
+                {"Content-Length", std::to_string(s.length)},
+                {"Server",         "shizuku/0.1"},
+        }});
+        res.write(s.content, s.length);
     }
     res.shutdown();
 }
