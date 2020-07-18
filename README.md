@@ -14,8 +14,6 @@
   "port": "8000",
   "router": {
     "/": "/home/shizuku/workspace/Webstorm/untitled/build",
-    "/page": "/home/shizuku/workspace/Webstorm/untitled1/build",
-    "/ha/hello": "/home/shizuku/workspace/Webstorm/untitled2/build"
   },
   "expires": {
     "htm|html|txt|rar|zip|flv|mid|doc|ppt|pdf|xls|mp3|wma": "15d",

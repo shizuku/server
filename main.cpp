@@ -69,7 +69,8 @@ int main() {
 
     sc = new server_config(config_filename);
     router = new server_router(static_cast<std::map<std::string, std::string, cmp> &&>(sc->router));
-    passer = new proxy_passer(static_cast<std::map<std::string, std::map<std::string, std::string>, cmp> &&>(sc->proxy_pass));
+    passer = new proxy_passer(
+            static_cast<std::map<std::string, std::map<std::string, std::string>, cmp> &&>(sc->proxy_pass));
     file_pool = new cache_file_pool{sc->expires};
 
     http::create_server(&www).listen(sc->port);
