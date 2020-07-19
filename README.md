@@ -17,17 +17,19 @@
 
 实现listen监听
 
-4. server_config
+4. http::error
+
+实现not found 、forbidden错误
+
+5. server_config
 
 使用boost/property_tree/json_parser解析json配置文件
 
-5. server_router
+6. server_router
 
 分析url并根据配置路由
 
-6. cache_file
-
-7. error
+7. cache_file
 
 8. server_proxy_passer
 
