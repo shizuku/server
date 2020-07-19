@@ -1,15 +1,15 @@
 /***********************
- * @file: proxy_passer.cpp
+ * @file: server_proxy_passer.cpp
  * @author: shizuku
  * @date: 2020/7/18
  ***********************/
-#include "proxy_passer.h"
+#include "server_proxy_passer.h"
 
-proxy_passer::proxy_passer(std::map<std::string, std::map<std::string, std::string>, cmp> &&map) : map{map} {
+server_proxy_passer::server_proxy_passer(std::map<std::string, std::map<std::string, std::string>, cmp> &&map) : map{map} {
 
 }
 
-bool proxy_passer::pass(const http::request &req, const http::response &res) {
+bool server_proxy_passer::pass(const http::request &req, const http::response &res) {
     std::string p{};
     for (auto &i:map) {
         if (req.url.compare(0, i.first.length(), i.first) == 0) {

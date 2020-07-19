@@ -10,11 +10,11 @@
 #include "http/server.h"
 #include "server_router.h"
 #include "cache_file_pool.h"
-#include "proxy_passer.h"
+#include "server_proxy_passer.h"
 
 server_config *sc;
 server_router *router;
-proxy_passer *passer;
+server_proxy_passer *passer;
 cache_file_pool *file_pool;
 
 void www(const http::request &req, http::response res) {
@@ -69,7 +69,7 @@ int main() {
 
     sc = new server_config(config_filename);
     router = new server_router(static_cast<std::map<std::string, std::string, cmp> &&>(sc->router));
-    passer = new proxy_passer(
+    passer = new server_proxy_passer(
             static_cast<std::map<std::string, std::map<std::string, std::string>, cmp> &&>(sc->proxy_pass));
     file_pool = new cache_file_pool{sc->expires};
 
