@@ -7,7 +7,7 @@
 #include <iomanip>
 
 #include "server_config.h"
-#include "http/http_server.h"
+#include "http/server.h"
 #include "server_router.h"
 #include "cache_file_pool.h"
 #include "proxy_passer.h"
@@ -17,7 +17,7 @@ server_router *router;
 proxy_passer *passer;
 cache_file_pool *file_pool;
 
-void www(const http::http_request &req, http::http_response res) {
+void www(const http::request &req, http::response res) {
     std::cout << req.method << "\t" << req.url << std::endl;
 
     if (!passer->pass(req, res)) {
@@ -30,7 +30,7 @@ void www(const http::http_request &req, http::http_response res) {
             auto path = router->route(req.url);
 
             auto s = file_pool->get(path);
-            res.write_head(200, "OK", http::http_response_headers{std::map<std::string, std::string>{
+            res.write_head(200, "OK", http::response_headers{std::map<std::string, std::string>{
                     {"Date",           time},
                     {"Accept-Ranges",  "bytes"},
                     {"Content-Type",   s.mime_type},
@@ -38,9 +38,9 @@ void www(const http::http_request &req, http::http_response res) {
                     {"Server",         "shizuku/0.1"},
             }});
             res.write(s.content, s.length);
-        } catch (const not_found &e) {
+        } catch (const http::not_found &e) {
             auto s = file_pool->get(sc->error_pages["404"]);
-            res.write_head(404, "Not Found", http::http_response_headers{std::map<std::string, std::string>{
+            res.write_head(404, "Not Found", http::response_headers{std::map<std::string, std::string>{
                     {"Date",           time},
                     {"Accept-Ranges",  "bytes"},
                     {"Content-Type",   s.mime_type},
@@ -48,9 +48,9 @@ void www(const http::http_request &req, http::http_response res) {
                     {"Server",         "shizuku/0.1"},
             }});
             res.write(s.content, s.length);
-        } catch (const forbidden &e) {
+        } catch (const http::forbidden &e) {
             auto s = file_pool->get(sc->error_pages["403"]);
-            res.write_head(403, "Forbidden", http::http_response_headers{std::map<std::string, std::string>{
+            res.write_head(403, "Forbidden", http::response_headers{std::map<std::string, std::string>{
                     {"Date",           time},
                     {"Accept-Ranges",  "bytes"},
                     {"Content-Type",   s.mime_type},

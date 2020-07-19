@@ -1,5 +1,5 @@
 /***********************
- * @file: http_response.h
+ * @file: response.h
  * @author: shizuku
  * @date: 2020/7/16
  ***********************/
@@ -16,22 +16,24 @@
 #include <libnet.h>
 
 namespace http {
-    class http_response_headers {
+    class response_headers {
     public:
-        explicit http_response_headers(std::map<std::string, std::string> m);
+        explicit response_headers(std::map<std::string, std::string> m);
 
         std::map<std::string, std::string> map;
     };
 
-    class http_response {
+    class response {
     public:
-        explicit http_response(int client_socket);
+        explicit response(int client_socket);
 
         void write(const std::string &trunk) const;
 
         void write(const char *s, size_t len) const;
 
-        void write_head(int status_code, const std::string &reason_phrase, const http_response_headers &headers) const;
+        void write_head(int status_code, 
+                        const std::string &reason_phrase, 
+                        const response_headers &headers) const;
 
         void end() const;
 

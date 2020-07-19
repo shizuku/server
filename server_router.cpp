@@ -39,7 +39,7 @@ std::string server_router::dir(const std::string &p) {
                 return path;
             }
         }
-        throw forbidden();
+        throw http::forbidden();
     } else {
         return p;
     }

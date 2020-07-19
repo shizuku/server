@@ -8,18 +8,7 @@
 
 cache_file::cache_file(const std::string &full_absolute_path, time_t create_time, time_t spire_time)
         : absolute_path{(full_absolute_path)}, expires_time(spire_time), create_time(create_time) {
-    if (access(absolute_path.c_str(), 00) == -1) {
-        throw not_found();
-    } else if (access(absolute_path.c_str(), 04) == -1) {
-        throw forbidden();
-    }
-    std::ifstream fs{full_absolute_path, std::ios_base::in | std::ios_base::binary};
-    fs.seekg(0, std::ifstream::end);
-    length = fs.tellg();
-    fs.seekg(0, std::ifstream::beg);
-    content = new char[length + 1]{0};
-    fs.read(content, length);
-    fs.close();
+    load(create_time);
 
     int start = 0;
     int pos = full_absolute_path.find('/', start);
@@ -39,6 +28,23 @@ cache_file::cache_file(const std::string &full_absolute_path, time_t create_time
     extension = file_name.substr(start);
 
     mime_type = generate_mime_type(extension);
+}
+
+void cache_file::load(time_t now) {
+    delete []content;
+    if (access(absolute_path.c_str(), 00) == -1) {
+        throw http::not_found();
+    } else if (access(absolute_path.c_str(), 04) == -1) {
+        throw http::forbidden();
+    }
+    std::ifstream fs{absolute_path, std::ios_base::in | std::ios_base::binary};
+    fs.seekg(0, std::ifstream::end);
+    length = fs.tellg();
+    fs.seekg(0, std::ifstream::beg);
+    content = new char[length + 1]{0};
+    fs.read(content, length);
+    fs.close();
+    create_time = now;
 }
 
 cache_file::~cache_file() {
@@ -101,6 +107,10 @@ cache_file_pool::cache_file_pool(const std::map<std::string, std::string> &expir
 const cache_file &cache_file_pool::get(const std::string &full_absolute_path) {
     for (auto &f:files) {
         if (f.absolute_path == full_absolute_path) {
+            auto t = std::time(nullptr);
+            if (f.create_time + f.expires_time > t) {
+                f.load(t);
+            }
             return f;
         }
     }
@@ -111,6 +121,7 @@ const cache_file &cache_file_pool::get(const std::string &full_absolute_path) {
     } catch (const std::out_of_range &e) {
         f.expires_time = 60000;
     }
+
     files.push_back(f);
     return get(full_absolute_path);
 }

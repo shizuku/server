@@ -10,8 +10,8 @@
 #include <map>
 
 #include "server_router.h"
-#include "http/http_request.h"
-#include "http/http_response.h"
+#include "http/request.h"
+#include "http/response.h"
 
 class proxy_passer {
 public:
@@ -19,7 +19,7 @@ public:
 
     explicit proxy_passer(std::map<std::string, std::map<std::string, std::string>, cmp> &&map);
 
-    bool pass(const http::http_request &req, const http::http_response &res);
+    bool pass(const http::request &req, const http::response &res);
 
 private:
     std::map<std::string, std::map<std::string, std::string>, cmp> map;

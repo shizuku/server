@@ -1,10 +1,10 @@
 /***********************
- * @file: http_request.h
+ * @file: request.h
  * @author: shizuku
  * @date: 2020/7/16
  ***********************/
-#ifndef HTTP_HTTP_REQUEST_H
-#define HTTP_HTTP_REQUEST_H
+#ifndef HTTP_REQUEST_H
+#define HTTP_REQUEST_H
 
 #include <map>
 #include <string>
@@ -12,11 +12,11 @@
 #include <sstream>
 
 namespace http {
-    class http_request_header {
+    class request_header {
     public:
-        http_request_header();
+        request_header();
 
-        explicit http_request_header(const std::string &head);
+        explicit request_header(const std::string &head);
 
         void pass(const std::string &url_, const std::string &host, int port);
 
@@ -24,9 +24,9 @@ namespace http {
         std::map<std::string, std::string> map;
     };
 
-    class http_request {
+    class request {
     public:
-        explicit http_request(const std::string &raw_headers);
+        explicit request(const std::string &raw_headers);
 
         void pass(const std::string &url_, const std::string &host, int port);
 
@@ -40,8 +40,8 @@ namespace http {
         std::string body;
 
         std::string raw;
-        http_request_header headers;
+        request_header headers;
     };
 }
 
-#endif //HTTP_HTTP_REQUEST_H
+#endif //HTTP_REQUEST_H

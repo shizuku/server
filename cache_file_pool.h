@@ -19,13 +19,15 @@
 #include <dirent.h>
 #include <unistd.h>
 
-#include "error.h"
+#include "http/error.h"
 
 class cache_file {
 public:
     const int BUFFER_SIZE = 40960;
 
     cache_file(const std::string &full_absolute_path, time_t create_time, time_t spire_time);
+
+    void load(time_t now);
 
     ~cache_file();
 

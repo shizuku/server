@@ -15,7 +15,7 @@
 #include <dirent.h>
 #include <unistd.h>
 
-#include "error.h"
+#include "http/error.h"
 
 struct cmp_ {
     bool operator()(const std::string &k1, const std::string &k2) const {

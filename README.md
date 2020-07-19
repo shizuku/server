@@ -5,18 +5,22 @@
 
 #### 软件架构
 软件架构说明
-1. http::http_request
+1. http::request
 
 实现了解析http request 
-2. http::http_response
+
+2. http::response
 
 实现了write 、shutdown和end。
-3. http::http_server
+
+3. http::server
 
 实现listen监听
+
 4. server_config
 
 使用boost/property_tree/json_parser解析json配置文件
+
 5. server_router
 
 分析url并根据配置路由

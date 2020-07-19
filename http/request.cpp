@@ -1,14 +1,14 @@
 /***********************
- * @file: http_request.cpp
+ * @file: request.cpp
  * @author: shizuku
  * @date: 2020/7/16
  ***********************/
-#include "http_request.h"
+#include "request.h"
 
 
-http::http_request_header::http_request_header() : http_request_header{""} {}
+http::request_header::request_header() : request_header{""} {}
 
-http::http_request_header::http_request_header(const std::string &head) : raw{}, map{} {
+http::request_header::request_header(const std::string &head) : raw{}, map{} {
     unsigned long start = 0;
     auto pos = head.find("\r\n", start);
     while (pos != std::string::npos) {
@@ -23,14 +23,14 @@ http::http_request_header::http_request_header(const std::string &head) : raw{},
     }
 }
 
-void http::http_request_header::pass(const std::string &url_, const std::string &host, int port) {
+void http::request_header::pass(const std::string &url_, const std::string &host, int port) {
     auto p = host + ":" + std::to_string(port);
     map.insert_or_assign("Host", p);
     map.insert_or_assign("Referer", "http://" + p + "/");
 }
 
 
-http::http_request::http_request(const std::string &request) : raw{request} {
+http::request::request(const std::string &request) : raw{request} {
     auto req_line_split = request.find("\r\n");
     auto req_head_split = request.find("\r\n\r\n");
     auto status = request.substr(0, req_line_split);
@@ -58,15 +58,15 @@ http::http_request::http_request(const std::string &request) : raw{request} {
         http_version_minor = http_version_minor * 10 + (i - 48);
     }
 
-    headers = http_request_header{head};
+    headers = request_header{head};
 }
 
-void http::http_request::pass(const std::string &url_, const std::string &host, int port) {
+void http::request::pass(const std::string &url_, const std::string &host, int port) {
     url = url_;
     headers.pass(url_, host, port);
 }
 
-std::string http::http_request::str() {
+std::string http::request::str() {
     std::stringstream ss{};
     ss << method << " " << url << " HTTP/" << http_version << "\r\n";
     for (auto &i:headers.map) {

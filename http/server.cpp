@@ -1,12 +1,12 @@
 /***********************
- * @file: http_server.cpp
+ * @file: server.cpp
  * @author: shizuku
  * @date: 2020/7/16
  ***********************/
-#include "http_server.h"
+#include "server.h"
 
 
-http::http_server &http::http_server::listen(int port) {
+http::server &http::server::listen(int port) {
     int server_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     struct sockaddr_in server_addr{};
     memset(&server_addr, 0, sizeof(server_addr));
@@ -30,10 +30,10 @@ http::http_server &http::http_server::listen(int port) {
     return *this;
 }
 
-http::http_server::http_server(http_server_callback_type callback, std::ostream &log) : callback(callback), log(log) {}
+http::server::server(server_callback_type callback, std::ostream &log) : callback(callback), log(log) {}
 
 
-void http::http_server::connect(int client_socket, http_server_callback_type callback) {
+void http::server::connect(int client_socket, server_callback_type callback) {
     std::string req{};
     char buffer[BUFFER_SIZE] = {0};
     int len;
@@ -45,10 +45,10 @@ void http::http_server::connect(int client_socket, http_server_callback_type cal
     if (req.empty()) {
         return;
     }
-    callback(http_request{req}, http_response{client_socket});
+    callback(request{req}, response{client_socket});
 }
 
-http::http_server http::create_server(http_server_callback_type callback) {
-    http_server server{callback};
+http::server http::create_server(server_callback_type callback) {
+    server server{callback};
     return server;
 }

@@ -9,7 +9,7 @@ proxy_passer::proxy_passer(std::map<std::string, std::map<std::string, std::stri
 
 }
 
-bool proxy_passer::pass(const http::http_request &req, const http::http_response &res) {
+bool proxy_passer::pass(const http::request &req, const http::response &res) {
     std::string p{};
     for (auto &i:map) {
         if (req.url.compare(0, i.first.length(), i.first) == 0) {
