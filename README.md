@@ -5,6 +5,9 @@
 
 #### 软件架构
 软件架构说明
+
+http部分参考node。
+
 1. http::request
     * 实现了解析http request 
 
