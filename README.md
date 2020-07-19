@@ -9,27 +9,31 @@
     * 实现了解析http request 
 
 2. http::response
-    * 实现了write 、shutdown和end。
+    * 实现了write 、shutdown和end方法。
 
 3. http::server
     * 实现listen监听
 
 4. http::error
-    * 实现not found 、forbidden错误
+    * 实现not_found 、forbidden错误
 
 5. server_config
     * 使用boost/property_tree/json_parser解析json配置文件
 
 6. server_router
-
     * 分析url并根据配置路由
 
-7. cache_file
-
+7. cache_file_pool cache_file
+    * 文件缓存实现文件的缓存
+    * 文件缓存池容器容纳
+    
 8. server_proxy_passer
+    * 分析url并根据配置实现反向代理
 
-9.main
-
+9. main
+    * 编写回调函数
+    * 调度各个模块
+    
 #### 使用说明
 
 1. 配置文件
@@ -71,4 +75,3 @@
     
     server.listen(9090);
     ```
-
