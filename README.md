@@ -39,7 +39,9 @@ http部分参考node。
     
 #### 使用说明
 
-1. 配置文件
+1. 复制配置文件和error_pages到生成目录
+
+2. 配置文件
     ```json
     {
       "port": "8000",
@@ -64,9 +66,9 @@ http部分参考node。
       }
     }
     ```
-2. 生成React页面测试请求和路由
+3. 生成React页面测试请求和路由
 
-3. 用node测试反向代理
+4. 用node测试反向代理
     ```js
     const http = require('http');
     
